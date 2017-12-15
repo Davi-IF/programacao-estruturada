@@ -45,6 +45,7 @@ int main(){
 	notas %=10;
 	printf("%d moeda(s) de R$ 0.05\n", notas/5);
 	notas %=5;
+	printf("%d\n", notas);
 	printf("%d moeda(s) de R$ 0.01\n", notas);
 	
 	return 0;
