@@ -8,12 +8,9 @@ int main(){
 	scanf("%d", &horas);
 	scanf("%d", &kmHoras);
 	
-	litros = (kmHoras * horas);
-	
-	litros = litros/12;
+	litros = (float)(kmHoras * horas)/12;
 	
 	printf("%.3f\n", litros);
-	
 	
 	return 0;
 }
