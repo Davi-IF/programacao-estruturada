@@ -70,6 +70,7 @@ int main(){
 		printf("Fim de jogo!\n");
 	}else{
 		printf("Você perdeu!!! Seu troxa, mais sorte na proxima\n");
+		printf("Fim de jogo!\n");
 	}
 	
 	return 0;
