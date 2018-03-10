@@ -1,9 +1,13 @@
 #include <stdio.h>
 #include <string.h>
 #include "forca.h"
+#include <time.h>
 #include <stdlib.h>
 
-char palavraSecreta[20];
+#define TAMANH0_PALAVRA 20
+#define ERROS_PERMITIDOS 7
+
+char palavraSecreta[TAMANH0_PALAVRA];
 char chutesDados[26];
 int numeroTentativa = 0;
 
@@ -50,29 +54,22 @@ int ganhou(){
 }
 
 int enforcou(){
-	
-	int erros = 0;
-	for (int i = 0; i < numeroTentativa; ++i){
-		int acertou = 0;
-		for (int j = 0; j < strlen(palavraSecreta); i++){
-			if(chutesDados[i] == palavraSecreta[j]){
-				acertou = 1;
-				break;
-			}
-		}
-		printf("Acertou: %d\n", acertou);
-
-		if(acertou == 0){
-			erros++;
-		}		
-		printf("Numero de erros: %d\n", erros);
-	}
-
-	return erros>=5;
+	return numeroDeErros() >= ERROS_PERMITIDOS;
 }
 
 void desenhaForca(){
-	printf("Voce ja deu %d chute(s)\n", numeroTentativa);
+	int errou = numeroDeErros();
+
+	printf("  ___________       \n");
+	printf(" |/          |      \n");
+	printf(" |          %c%c%c  \n", (errou>0 ? '(' : ' '), (errou>0 ? '_' : ' '),(errou>0 ? ')' : ' '));
+	printf(" |          %c%c%c  \n", (errou>2 ? '\\' : ' '),(errou>1 ? '|' : ' '), (errou>3 ? '/' : ' '));
+	printf(" |           %c    \n", (errou>1 ? '|' : ' '));
+	printf(" |          %c %c  \n", (errou>4 ? '/' : ' '),(errou>5 ? '\\' : ' '));
+	printf(" |                  \n");
+	printf("_|____              \n");
+
+	printf("\n\n");
 
 	for(int x = 0; x < strlen(palavraSecreta); x++){
 
@@ -90,13 +87,51 @@ void desenhaForca(){
 void escolhePalavra(){
 
 	FILE* f;
+	int numeroPalavras;
 
 	f = fopen("palavras.txt", "r");
+	
 	if(f == 0){
 		printf("Falha no arquivo, jogo encerrado!\n\n");
 		exit(1);
 	}
+	fscanf(f, "%d", &numeroPalavras);
 
+	srand(time(0));
+
+	int randomico = rand() % numeroPalavras; 
+
+	for(int i = 0; i <= randomico; i++){
+		fscanf(f, "%s", palavraSecreta);
+	}
+}
+
+int numeroDeErros(){
+	int erros = 0;
+
+	for (int i = 0; i < numeroTentativa; ++i){
+		int acertou = 0;
+		for (int j = 0; j < strlen(palavraSecreta); j++){
+			if(chutesDados[i] == palavraSecreta[j]){
+				acertou = 1;
+				break;
+			}
+		}
+		if(acertou == 0){
+			erros++;
+		}		
+	}
+
+	return erros;
+}
+
+void veredito(){
+	if(ganhou()){
+		printf("Parabens!!! Voce venceu");
+	}else{
+		printf("Que pena! Voce perdeu\n");
+		printf("A palavra era: %s\n", palavraSecreta);
+	}
 }
 
 int main(){
@@ -109,6 +144,6 @@ int main(){
 		desenhaForca();
 		chute();
 	}while(!ganhou() && !enforcou());
-		
-	return 0;
+
+	veredito();
 }

@@ -5,3 +5,4 @@ int jachutou(char letra);
 int ganhou();
 void desenhaForca();
 void escolhePalavra();
+int numeroDeErros();
