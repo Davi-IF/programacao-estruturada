@@ -63,7 +63,7 @@ void desenhaForca(){
 	printf("  ___________       \n");
 	printf(" |/          |      \n");
 	printf(" |          %c%c%c  \n", (errou>0 ? '(' : ' '), (errou>0 ? '_' : ' '),(errou>0 ? ')' : ' '));
-	printf(" |          %c%c%c  \n", (errou>2 ? '\\' : ' '),(errou>1 ? '|' : ' '), (errou>3 ? '/' : ' '));
+	printf(" |          %c%c%c  \n", (errou>2 ? '/' : ' '),(errou>1 ? '|' : ' '), (errou>3 ? '\\' : ' '));
 	printf(" |           %c    \n", (errou>1 ? '|' : ' '));
 	printf(" |          %c %c  \n", (errou>4 ? '/' : ' '),(errou>5 ? '\\' : ' '));
 	printf(" |                  \n");
