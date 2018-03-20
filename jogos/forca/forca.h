@@ -6,3 +6,4 @@ int ganhou();
 void desenhaForca();
 void escolhePalavra();
 int numeroDeErros();
+void escolheNivel();

@@ -4,12 +4,13 @@
 #include <time.h>
 #include <stdlib.h>
 
-#define TAMANH0_PALAVRA 20
-#define ERROS_PERMITIDOS 7
+#define TAMANHO_PALAVRA 20
 
-char palavraSecreta[TAMANH0_PALAVRA];
+int ERROS_PERMITIDOS;
+char palavraSecreta[TAMANHO_PALAVRA];
 char chutesDados[26];
 int numeroTentativa = 0;
+int pontos = 0;
 
 //abertura do jogo
 void abertura(){
@@ -18,14 +19,43 @@ void abertura(){
 	printf("#=======================#\n");
 }
 
+
 //Função de chute, existe a entrada de uma letra 
 //adiciona a letra no vetor, correspondente a tentativa 
 //utilizando ponteiro
+int verificaChute(char chute){
+	return chute < 65 || chute > 90;
+}
+
+
+void escolheNivel(){
+	int nivel;
+
+	printf("\nQual nivel de dificuldade deseja escolher?\n");
+	printf("1) Facil 2) Medio 3) Dificil\n");
+	scanf("%d", &nivel);
+
+	if(nivel == 1){
+		ERROS_PERMITIDOS = 11;
+	}else if(nivel == 2){
+		ERROS_PERMITIDOS = 7;
+	}else{
+		ERROS_PERMITIDOS = 5;
+	}
+
+}
+
 void chute(){
 	char chute;
-		
-	printf("\nQual letra? ");
-	scanf(" %c", &chute);
+	
+	while(verificaChute(chute)){
+		printf("\nQual letra? ");
+		scanf(" %c", &chute);
+
+		if(verificaChute(chute)){
+			printf("Apenas letras de A-Z maiusculo\n");
+		}
+	}
 	chutesDados[numeroTentativa] = chute;
 	numeroTentativa++;
 }
@@ -50,6 +80,14 @@ int ganhou(){
 			return 0;
 		}
 	}
+
+	if(ERROS_PERMITIDOS == 14){
+		pontos++;
+	}else if(ERROS_PERMITIDOS == 7){
+		pontos+=2;
+	}else{
+		pontos+=3;
+	}
 	return 1;
 }
 
@@ -60,14 +98,34 @@ int enforcou(){
 void desenhaForca(){
 	int errou = numeroDeErros();
 
-	printf("  ___________       \n");
-	printf(" |/          |      \n");
-	printf(" |          %c%c%c  \n", (errou>0 ? '(' : ' '), (errou>0 ? '_' : ' '),(errou>0 ? ')' : ' '));
-	printf(" |          %c%c%c  \n", (errou>2 ? '/' : ' '),(errou>1 ? '|' : ' '), (errou>3 ? '\\' : ' '));
-	printf(" |           %c    \n", (errou>1 ? '|' : ' '));
-	printf(" |          %c %c  \n", (errou>4 ? '/' : ' '),(errou>5 ? '\\' : ' '));
-	printf(" |                  \n");
-	printf("_|____              \n");
+	if(ERROS_PERMITIDOS == 7){
+		printf("  ___________       \n");
+		printf(" |/          |      \n");
+		printf(" |          %c%c%c  \n", (errou>0 ? '(' : ' '), (errou>0 ? '_' : ' '),(errou>0 ? ')' : ' '));
+		printf(" |          %c%c%c  \n", (errou>2 ? '/' : ' '),(errou>1 ? '|' : ' '), (errou>3 ? '\\' : ' '));
+		printf(" |           %c    \n", (errou>1 ? '|' : ' '));
+		printf(" |          %c %c  \n", (errou>4 ? '/' : ' '),(errou>5 ? '\\' : ' '));
+		printf(" |                  \n");
+		printf("_|____              \n");
+	} else if (ERROS_PERMITIDOS == 11 ){
+		printf("  ___________       \n");
+		printf(" |/          |      \n");
+		printf(" |          %c%c%c  \n", (errou>0 ? '(' : ' '), (errou>1 ? '_' : ' '),(errou>2 ? ')' : ' '));
+		printf(" |          %c%c%c  \n", (errou>4 ? '/' : ' '),(errou>5 ? '|' : ' '), (errou>6 ? '\\' : ' '));
+		printf(" |           %c    \n", (errou>7 ? '|' : ' '));
+		printf(" |          %c %c  \n", (errou>8 ? '/' : ' '),(errou>9 ? '\\' : ' '));
+		printf(" |                  \n");
+		printf("_|____              \n");	
+	}else{
+		printf("  ___________       \n");
+		printf(" |/          |      \n");
+		printf(" |          %c%c%c  \n", (errou>0 ? '(' : ' '), (errou>0 ? '_' : ' '),(errou>0 ? ')' : ' '));
+		printf(" |          %c%c%c  \n", (errou>1 ? '/' : ' '),(errou>1 ? '|' : ' '), (errou>1 ? '\\' : ' '));
+		printf(" |           %c    \n", (errou>2 ? '|' : ' '));
+		printf(" |          %c %c  \n", (errou>3 ? '/' : ' '),(errou>3 ? '\\' : ' '));
+		printf(" |                  \n");
+		printf("_|____              \n");
+	}
 
 	printf("\n\n");
 
@@ -104,6 +162,8 @@ void escolhePalavra(){
 	for(int i = 0; i <= randomico; i++){
 		fscanf(f, "%s", palavraSecreta);
 	}
+
+	fclose(f);
 }
 
 int numeroDeErros(){
@@ -134,16 +194,48 @@ void veredito(){
 	}
 }
 
+
+void resetaJogo(){
+	for (int i = 0; i < strlen(chutesDados); ++i){
+			chutesDados[i] = ' ';
+	}
+	numeroTentativa = 0;
+}
 int main(){
 	
+	char again;
 	abertura();
-	escolhePalavra();
-
 	do{
+		escolhePalavra();
+		escolheNivel();
 
-		desenhaForca();
-		chute();
-	}while(!ganhou() && !enforcou());
+		do{		
+			desenhaForca();
+			chute();
+		}while(!ganhou() && !enforcou());
 
-	veredito();
+		veredito();
+
+		printf("\n\nDeseja jogar novamente? <s/n>\n");
+		scanf(" %c", &again);
+
+		resetaJogo();
+	}while(again == 's');
+
+	printf("%d", enforcou());
+
+	if(pontos != 0){
+       FILE *f;
+	   char nome[30];
+	   
+
+	   f = fopen("ranking.txt", "a");
+
+	   printf("Digite o nome do vencedor: \n");
+	   scanf("%s", nome);
+
+	   fprintf(f, "%s %d\n", nome, pontos);
+
+	   fclose(f);
+	}
 }

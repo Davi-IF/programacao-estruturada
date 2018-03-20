@@ -34,8 +34,8 @@ int main(){
 			totalTentativas = 6;
 			break;
 	}
-	int i;
-	for ( i = 1; i<=totalTentativas; i++){
+
+	do{
 		printf("***************************\n");
 		printf("Você está na tentativa: %i\n",numeroTentativas);
 		printf("***************************\n");
@@ -43,7 +43,6 @@ int main(){
 		printf("***************************\n\n");
 		printf("Digite o numero do seu chute: ");
 		scanf("%i",&chute);
-		printf("\nNumero: %i\n", chute);
 
 		acertou = chute == numeroSecreto;
 		pontos -=abs((numeroSecreto - chute)/2);
@@ -64,12 +63,12 @@ int main(){
 			}
 		}
 		numeroTentativas++;
-	}
+	}while(numeroTentativas<=totalTentativas);
 	if(acertou){
 		printf("Você terminou com %i pontos\n",pontos);
 		printf("Fim de jogo!\n");
 	}else{
-		printf("Você perdeu!!! Seu troxa, mais sorte na proxima\n");
+		printf("Você perdeu!!! HAHAHAHA!...mais sorte na proxima\n");
 		printf("Fim de jogo!\n");
 	}
 	
