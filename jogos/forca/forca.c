@@ -21,7 +21,6 @@ void abertura(){
 	printf("#=======================#\n\n");
 }
 
-
 //Função de chute, existe a entrada de uma letra 
 //adiciona a letra no vetor, correspondente a tentativa 
 //utilizando ponteiro
@@ -284,6 +283,13 @@ void novaPalavra(){
 				while(palavraNova[i] < 65 || palavraNova[i] > 90){
 					printf("Nome invalido, por favor so use letras maiusculas\n");
 					scanf("%s", palavraNova);
+					
+					if(contemPalavra(palavraNova)){
+					printf("\nDesculpe %s\nEssa palavra ja existe em nosso banco de dados\n\n", nome);
+					system("pause");
+					system("cls");
+					return;
+					}
 				}
 			}
 		}

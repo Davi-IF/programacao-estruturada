@@ -1,45 +1,59 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include "foge.h"
+#include "mapa.h"
 
-char** mapa;
-int linhas, colunas;
+MAPA m;
 
-void lerMapa(){
-	FILE* f;
-	f = fopen("mapa.txt", "r");
-	if(f == 0){
-		printf("Erro ao abrir o arquivo\n");
-		exit(1);
-	} 
+void move(char comando){
+	int x,y;
 
-	fscanf(f, "%d %d", &linhas, &colunas);
-
-	alaocaMapa();
-	
-	//leitura
-	for(int i = 0; i<linhas; i++){
-		fscanf(f, "%s", mapa[i]);
+	for(int i = 0; i < m.linhas; i++){
+		for(int j = 0; j < m.colunas; j++){
+			if(m.matriz[i][j] == '@'){
+				x = i;
+				y = j;
+				break;
+			}
+		}
 	}
 
-	fclose(f);
+	switch(comando){
+		case 'w':
+			m.matriz[x-1][y] = '@';
+			break;
+		case 's':
+			m.matriz[x+1][y] = '@';
+			break;
+		case 'a':
+			m.matriz[x][y-1] = '@';
+			break; 
+		case 'd':
+			m.matriz[x][y+1] = '@';
+			break;
+	}
+	m.matriz[x][y] = '.';
 }
 
-void alocaMapa(){
-	mapa = malloc(sizeof(char*) * linhas);
-
-	for(int i = 0; i<linhas; i++){
-		mapa[i] = malloc(sizeof(char) * colunas+1); 
-	}	
+int acabou(){
+	return 0;
 }
 
 int main(){
-	//impressão
 
-	lerMapa();
+	lerMapa(&m);
 
-	for(int i = 0; i < linhas; i++){
-		printf("%s\n", mapa[i]);
-	}
+	do{
+		char comando;
+		system("cls");
+		imprimeMapa(&m);
+		//le entrada
+		scanf(" %c", &comando);
+
+		move(comando);
+
+		//atualizar mapa
+	}while(!acabou());
 
 	return 0;
 }
