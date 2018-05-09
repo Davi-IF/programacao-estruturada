@@ -4,35 +4,66 @@
 #include "mapa.h"
 
 MAPA m;
+POSICAO heroi;
 
-void move(char comando){
-	int x,y;
-
-	for(int i = 0; i < m.linhas; i++){
-		for(int j = 0; j < m.colunas; j++){
-			if(m.matriz[i][j] == '@'){
-				x = i;
-				y = j;
-				break;
+void encontramapa(MAPA* m, POSICAO* p, char c){
+	
+	for(int i = 0; i < m->linhas; i++){
+		for(int j = 0; j < m->colunas; j++){
+			if(m->matriz[i][j] == c){
+				p->x = i;
+				p->y = j;
+				return;
 			}
 		}
 	}
 
+}
+
+void move(char comando){
+
+	if (ehdirecao(comando)){
+		return;
+	}
+
 	switch(comando){
 		case 'w':
-			m.matriz[x-1][y] = '@';
+			m.matriz[heroi.x-1][heroi.y] = '@';
+			heroi.x--;
 			break;
 		case 's':
-			m.matriz[x+1][y] = '@';
+			m.matriz[heroi.x+1][heroi.y] = '@';
+			heroi.x++;
 			break;
 		case 'a':
-			m.matriz[x][y-1] = '@';
+			m.matriz[heroi.x][heroi.y-1] = '@';
+			heroi.y--;
 			break; 
 		case 'd':
-			m.matriz[x][y+1] = '@';
+			m.matriz[heroi.x][heroi.y+1] = '@';
+			heroi.y++;
 			break;
 	}
+
 	m.matriz[x][y] = '.';
+}
+
+int ehdirecao(char comando){
+	return comando != 'a' && comando != 'w' && comando != 's' && comando != 'd';
+}
+
+int ehvalida(MAPA* m, int x, int y){
+	if(x>= m->linhas){
+		return 0;
+	}
+	if (y>= m->colunas){
+		return 0;
+	}
+	return 1;
+}
+
+int ehvazia(MAPA* m, int x, int y){
+	return m->matriz[x][y] == '.';
 }
 
 int acabou(){
@@ -42,6 +73,8 @@ int acabou(){
 int main(){
 
 	lerMapa(&m);
+	encontramapa(&m, &heroi, '@');
+
 
 	do{
 		char comando;

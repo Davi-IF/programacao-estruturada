@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <string.h>
+#include <string.h>
 
 int main(){
 	
@@ -9,31 +10,31 @@ int main(){
 	scanf("%s", &nome2);
 	scanf("%s", &nome3);
 	
-	if(nome1 == "vertebrado"){
-		if(nome2 == "ave"){
-			if(nome3 == "carnivoro"){
+	if(strcmp (nome1, "vertebrado") == 0){
+		if(strcmp (nome2, "ave") == 0){
+			if(strcmp (nome3, "carnivero") == 0){
 				printf("aguia\n");
-			}else if(nome3 == "onivoro"){
+			}else if(strcmp (nome3, "onivoro") == 0){
 				printf("pomba\n");
 			}
-		}else if(nome2 == "mamifero"){
-			if(nome3 == "herbivoro"){
+		}else if(strcmp (nome2, "mamifero") == 0){
+			if(strcmp (nome3, "herbivoro") == 0){
 				printf("vaca\n");
-			}else if(nome3 == "onivoro"){
+			}else if(strcmp (nome3, "onivoro") == 0){
 				printf("onivoro\n");
 			}
 		}
-	}else if(nome1 == "invertebrado"){
-		if(nome2 == "inseto"){
-			if(nome3 == "hematofago"){
+	}else if(strcmp (nome1, "invertebrado") == 0){
+		if(strcmp (nome2, "inseto") == 0){
+			if(strcmp (nome3, "hematofago") == 0){
 				printf("pulga\n");
-			}else if(nome3 == "herbivoro"){
+			}else if(strcmp (nome3, "herbivoro") == 0){
 				printf("lagarta\n");
 			}
-		}else if(nome2 == "analideo"){
-			if(nome3 == "hematofago"){
+		}else if(strcmp (nome2, "anelideo") == 0){
+			if(strcmp (nome3, "hematofago") == 0){
 				printf("sanguessuga\n");
-			}else if(nome3 == "onivoro"){
+			}else if(strcmp (nome3, "onivoro") == 0){
 				printf("minhoca\n");
 			}
 		}
