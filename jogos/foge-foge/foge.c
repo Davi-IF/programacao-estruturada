@@ -45,7 +45,7 @@ void move(char comando){
 			break;
 	}
 
-	m.matriz[x][y] = '.';
+	m.matriz[heroi.x][heroi.y] = '.';
 }
 
 int ehdirecao(char comando){
@@ -78,7 +78,7 @@ int main(){
 
 	do{
 		char comando;
-		system("cls");
+		system("clear");
 		imprimeMapa(&m);
 		//le entrada
 		scanf(" %c", &comando);
